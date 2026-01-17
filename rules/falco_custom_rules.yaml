@@ -1,0 +1,11 @@
+# Custom Falco rule for sensitive file writes
+- rule: Sensitive File Write /etc/passwd or /etc/shadow
+  desc: Detects writes to critical system files /etc/passwd or /etc/shadow
+  condition: evt.type = open and evt.is_open_write=true and (fd.name = "/etc/passwd" or fd.name = "/etc/shadow")
+  output: "Sensitive file write detected (user=%user.name file=%fd.name cmdline=%proc.cmdline)"
+  priority: CRITICAL
+  tags:
+    - filesystem
+    - credential_access
+    - falco_custom
+  source: syscall
